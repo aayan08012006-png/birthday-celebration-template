@@ -24,7 +24,7 @@ May every moment of your life be filled with smiles, love, and beautiful memorie
 You are truly a blessing, and I hope this birthday brings you joy as bright as your smile.
 Always keep shining, stay strong, and remember someone is wishing you the best today and always 💖
 
-May Allah guide you, protect you, and make all your dreams come true. ✨
+May Allah guide you, protect you, and make all your dreams come true.   ✨
 
 Happy Birthday, Sania! 🎉
 
