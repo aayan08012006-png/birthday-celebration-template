@@ -15,15 +15,11 @@ gsap.registerPlugin(ScrollToPlugin);
 function App() {
   const [currentPage, setCurrentPage] = useState(1); // Start at 1 for Countdown page
 
-  // ⚠️ FOR TESTING: Comment out lines 18-21 to reset on every reload
-  // Check localStorage to persist birthday reached state
+  // Persist birthday reached state in localStorage
   const [birthdayReached, setBirthdayReached] = useState(() => {
     const saved = localStorage.getItem("birthdayReached");
     return saved === "true";
   });
-
-  // ✅ FOR TESTING: Uncomment this line to always show countdown on reload
-  // const [birthdayReached, setBirthdayReached] = useState(false);
 
   const [showEffects, setShowEffects] = useState(false);
 
@@ -64,10 +60,7 @@ function App() {
       delay: 0.2,
       onComplete: () => {
         setCurrentPage(pageNumber);
-        // Reset current page position
         gsap.set(currentPageRef.current, { x: "0%", visibility: "hidden" });
-
-        // Smooth scroll to top
         gsap.to(window, { duration: 0.3, scrollTo: { y: 0 } });
       },
     });
@@ -75,9 +68,8 @@ function App() {
 
   const handleBirthdayReached = () => {
     setBirthdayReached(true);
-    localStorage.setItem("birthdayReached", "true"); // Persist to localStorage
+    localStorage.setItem("birthdayReached", "true");
     setShowEffects(true);
-    // Stop effects after some time
     setTimeout(() => setShowEffects(false), 10000);
   };
 
@@ -96,16 +88,18 @@ function App() {
           <h1 id="heroTitle">
             {birthdayReached ? (
               <>
-                Happy Birthday <span className="highlight">[Name]</span> 🎂
+                🎉 Happy Birthday <span className="highlight">Sania</span>! 🎂
               </>
             ) : (
               <>
-                Counting down to <span className="highlight">[Name]'s</span>{" "}
+                Counting down to <span className="highlight">Sania's</span>{" "}
                 special day 🎂
               </>
             )}
           </h1>
-          <p>Your personalized message goes here 💗</p>
+          <p>
+            May your day be filled with joy, laughter, and endless blessings 💗
+          </p>
         </section>
 
         <Countdown
@@ -116,10 +110,10 @@ function App() {
         <section className="teaser">
           <h2 id="teaserHeading">
             {birthdayReached
-              ? "💖 Ready for your surprise! 💖"
-              : "✨ A special celebration awaits you at midnight... ✨"}
+              ? "💖 Get ready for a magical surprise! 💖"
+              : "✨ Something amazing is coming at midnight... ✨"}
           </h2>
-          <p className="teaser-hint">Something magical is about to unfold 💫</p>
+          <p className="teaser-hint">A day full of love and happiness awaits 💫</p>
         </section>
 
         <button
@@ -170,8 +164,10 @@ function App() {
         </button>
         <Gallery isActive={currentPage === 4} />
         <section className="final">
-          <h2 className="final-message">💖 Forever Yours — [Your Name] 💖</h2>
-          <p className="final-subtitle">Your personalized closing message ✨</p>
+          <h2 className="final-message">💖 Forever Yours — Sania 💖</h2>
+          <p className="final-subtitle">
+            Wishing you love, laughter, and happiness today and always ✨
+          </p>
         </section>
       </div>
 
