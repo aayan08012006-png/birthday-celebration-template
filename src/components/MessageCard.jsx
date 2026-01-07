@@ -75,8 +75,56 @@ Happy Birthday, Sania! 🎉
       gsap.to(curtainHintRef.current, { opacity: 0, scale: 0.8, duration: 0.4, ease: "power2.in" });
 
       const timeline = gsap.timeline();
-      timeline.to(curtainLeftRef.current, { x: "-100%", rotationY: -rotationAngle, duration, ease: "power3
+      timeline.to(curtainLeftRef.current, { x: "-100%", rotationY: -rotationAngle, duration, ease: "power3.inOut" }, 0);
+      timeline.to(curtainRightRef.current, { x: "100%", rotationY: rotationAngle, duration, ease: "power3.inOut" }, 0);
+      timeline.to([curtainLeftRef.current, curtainRightRef.current], { opacity: 0, duration: 0.5, delay: isMobile ? 0.8 : 1 }, 0);
+      timeline.to(messageContentRef.current, { opacity: 1, scale: 1, duration: isMobile ? 0.8 : 1, ease: "back.out(1.2)", delay: isMobile ? 0.6 : 0.8 }, 0);
+    }
+  };
 
+  const handleTouchStart = () => {
+    if (!curtainsOpened) gsap.to(curtainHintRef.current, { scale: 0.95, duration: 0.1 });
+  };
+
+  const handleTouchEnd = () => {
+    if (!curtainsOpened) gsap.to(curtainHintRef.current, { scale: 1, duration: 0.1 });
+  };
+
+  return (
+    <section className="message">
+      <h2>💌 A Message From My Heart</h2>
+
+      <div className="curtain-container">
+        <div className="curtain-rod"></div>
+
+        <div
+          className={`curtain-wrapper ${curtainsOpened ? "opened opening" : ""}`}
+          onClick={handleOpenCurtains}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+          role="button"
+          tabIndex={curtainsOpened ? -1 : 0}
+          aria-label="Click or tap to open the curtains and reveal the birthday message"
+          onKeyDown={(e) => {
+            if ((e.key === "Enter" || e.key === " ") && !curtainsOpened) {
+              e.preventDefault();
+              handleOpenCurtains();
+            }
+          }}
+        >
+          <div ref={curtainLeftRef} className="curtain curtain-left"></div>
+          <div ref={curtainRightRef} className="curtain curtain-right"></div>
+          {!curtainsOpened && (
+            <div ref={curtainHintRef} className="curtain-hint">
+              ✨ {window.innerWidth <= 768 ? "Tap" : "Click"} to Open ✨
+            </div>
+          )}
+        </div>
+
+        <div ref={messageContentRef} className="message-content" role="article" aria-label="Birthday message">
+          <p className="typed-text">{message}</p>
+        </div>
+      </div>
 
       {showConfetti && <Confetti />}
     </section>
@@ -84,3 +132,4 @@ Happy Birthday, Sania! 🎉
 }
 
 export default MessageCard;
+
