@@ -19,19 +19,14 @@ function Gallery({ isActive }) {
     { src: "/images/pic6.jpeg", alt: "Memory 6" },
   ];
 
-  // Reveal photos with GSAP when page becomes active
+  // Reveal photos when page becomes active
   useEffect(() => {
     if (isActive && !photosRevealed) {
       setTimeout(() => setPhotosRevealed(true), 10);
 
-      // Stagger animation for photos
       gsap.fromTo(
         photosRef.current,
-        {
-          opacity: 0,
-          y: 50,
-          scale: 0.8,
-        },
+        { opacity: 0, y: 50, scale: 0.8 },
         {
           opacity: 1,
           y: 0,
@@ -49,7 +44,6 @@ function Gallery({ isActive }) {
     setCurrentIndex(index);
     setLightboxOpen(true);
 
-    // Animate lightbox appearance
     if (lightboxImgRef.current) {
       gsap.fromTo(
         lightboxImgRef.current,
@@ -59,27 +53,17 @@ function Gallery({ isActive }) {
     }
   };
 
-  const closeLightbox = useCallback(() => {
-    setLightboxOpen(false);
-  }, []);
+  const closeLightbox = useCallback(() => setLightboxOpen(false), []);
 
-  // Handle body overflow in effect
+  // Prevent scrolling when lightbox is open
   useEffect(() => {
-    if (lightboxOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-
-    return () => {
-      document.body.style.overflow = "";
-    };
+    document.body.style.overflow = lightboxOpen ? "hidden" : "";
+    return () => (document.body.style.overflow = "");
   }, [lightboxOpen]);
 
   const showNext = useCallback(() => {
     const newIndex = (currentIndex + 1) % photos.length;
 
-    // Animate transition
     if (lightboxImgRef.current) {
       gsap.to(lightboxImgRef.current, {
         x: -100,
@@ -101,7 +85,6 @@ function Gallery({ isActive }) {
   const showPrev = useCallback(() => {
     const newIndex = (currentIndex - 1 + photos.length) % photos.length;
 
-    // Animate transition
     if (lightboxImgRef.current) {
       gsap.to(lightboxImgRef.current, {
         x: 100,
@@ -120,22 +103,17 @@ function Gallery({ isActive }) {
     }
   }, [currentIndex, photos.length]);
 
+  // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (!lightboxOpen) return;
-
-      if (e.key === "Escape") {
-        closeLightbox();
-      } else if (e.key === "ArrowLeft") {
-        showPrev();
-      } else if (e.key === "ArrowRight") {
-        showNext();
-      }
+      if (e.key === "Escape") closeLightbox();
+      else if (e.key === "ArrowLeft") showPrev();
+      else if (e.key === "ArrowRight") showNext();
     };
-
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [lightboxOpen, showNext, showPrev, closeLightbox]);
+  }, [lightboxOpen, closeLightbox, showPrev, showNext]);
 
   return (
     <section className="gallery">
